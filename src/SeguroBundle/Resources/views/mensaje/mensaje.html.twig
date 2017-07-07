@@ -1,0 +1,18 @@
+{% for flashMessage in app.session.flashbag.get('correcto') %}
+    <div class="alert alert-success alert-dismissable">
+    	<button type="button" class="close" data-dismiss="alert">&times;</button>
+   		<strong>{{ flashMessage }}  </strong>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('incorrecto') %}
+    <div class="alert alert-danger alert-dismissable">
+    	<button type="button" class="close" data-dismiss="alert">&times;</button>
+   		<strong>{{ flashMessage }}  </strong>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('information') %}
+    <div class="alert alert-info alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>{{ flashMessage }}  </strong>
+    </div>
+{% endfor %}

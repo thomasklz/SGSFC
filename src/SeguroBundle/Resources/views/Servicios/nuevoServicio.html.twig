@@ -1,0 +1,36 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+{% block contentPage %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Registrar Servicios</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-th"></i><a href=""> Servicio</a>
+                    </li>
+                    <li class="active">Registrar</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row"> 
+    {{ include('SeguroBundle:mensaje:mensaje.html.twig') }}
+        {{form_start(form)}}
+            <div class="form-group">
+                {{ form_label(form.servicio)}}
+                {{ form_widget(form.servicio, { 'attr' : {'class':'form-control', 'name':'servicio', 'placeholder': 'Ingresar servicio'}}) }}
+                <span class="text-danger"> {{ form_errors(form.servicio) }}</span>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.valor)}}
+                {{ form_widget(form.valor, { 'attr' : {'class':'form-control', 'placeholder': 'Ingresar valor', 'name':'valor'}}) }}
+                <span class="text-danger"> {{ form_errors(form.valor) }}</span>
+            </div>
+            <div class="form-group">
+                {{ form_widget(form.save, { 'attr' : {'class':'btn btn-primary'}}) }}
+            </div>
+        {{form_end(form)}}
+    </div>
+</div>    
+{% endblock %}

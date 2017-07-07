@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %} {% endblock %}</title>
+  {% block stylesheet %}
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- PACE LOAD BAR PLUGIN - This creates the subtle load bar effect at the top of the page. -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/pace/pace.css') }}">
+    <!-- GLOBAL STYLES - Include these on every page. -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic' rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('icons/font-awesome/css/font-awesome.min.css') }}">
+    <!-- THEME STYLES - Include these on every page. -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins.css') }}">
+    <!-- THEME DEMO STYLES - Use these styles for reference if needed. Otherwise they can be deleted. -->
+    <link rel="stylesheet" href="{{ asset('css/demo.css') }}">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+  {% endblock %} 
+{% block javascriptsHeader %}
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" ></script>
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+{% endblock %}
+</head>
+<body>
+{% block body %}
+{% endblock %}
+{% block javascripts %}
+<!-- GLOBAL SCRIPTS -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ asset ('js/plugins/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset ('js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+    <script src="{{ asset ('js/plugins/popupoverlay/jquery.popupoverlay.js') }}"></script>
+    <script src="{{ asset ('js/plugins/popupoverlay/defaults.js') }}"></script>
+{% endblock %}
+</body>
+</html>
+
+
+

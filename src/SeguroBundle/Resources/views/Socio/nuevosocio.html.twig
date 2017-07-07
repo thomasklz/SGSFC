@@ -1,0 +1,134 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+
+{% block stylesheet %}
+    {{ parent() }}
+<!-- datepicker style -->
+ <link href="{{ asset ('css/plugins/bootstrap-datepicker/datepicker3.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/validate/bootstrapValidator.min.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contentPage %}
+<div class="page-content">
+<!-- begin PAGE TITLE ROW -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Registrar Socio</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-user"></i>  <a href="index.html">Socio</a>
+                    </li>
+                    <li class="active">Registrar</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+ <!-- Stacked Pills Example -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="portlet portlet-default">
+                <div class="portlet-heading">
+                    <div class="portlet-title">
+                        <h4>Ingresar un nuevo socio</h4>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div id="myStackedContent" class="tab-content">
+                                <div class="tab-pane fade in active" id="stackedHome">
+                                 	<div class="row">
+                                 		<div class="col-sm-12">
+                                       
+                                        {% for flashMessage in app.session.flashbag.get('ErrorSocio') %}
+                                            <br>
+                                            <div class="alert alert-danger alert-dismissable">
+                                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                              <strong>{{ flashMessage }}  </strong>
+                                            </div>
+                                        {% endfor %} 
+                                 			<h5 class="text-dafault">DATOS PERSONALES:</h5>
+											<div class="row">
+												<div class="col-sm-1"></div>
+												<div class="col-sm-11">
+													<form action="{{path('nuevo_socio')}}" method="post" id="registrationForm">
+														<div class="form-group">
+														   <label>Nombres</label>
+														   <input type="text" class="form-control" name="nombres" placeholder="Ingrese sus nombre">
+														</div>
+														<div class="form-group">
+														   <label>Apellidos</label>
+														   <input type="text" class="form-control" name="apellidos" placeholder="Ingrese sus apellidos">
+														</div>
+														<div class="form-group">
+														   <label>Cédula</label>
+														   <input type="text" class="form-control" maxlength="10" size="10"name="cedula" placeholder="Ingrese su número de cédula">
+														</div>
+														<div class="form-group">
+														   <label>Fecha de Nacimiento</label>
+														    <div id="sandbox-container">
+			                                                    <input class="form-control" type="text"  id="datetimepicker" name="datetimepicker" data-date-format="yyyy-mm-dd"/>
+			                                                </div>
+														</div>
+														<div class="form-group">
+                                                   			<label>Sexo &nbsp;</label>
+	                                                        <label class="radio-inline">
+	                                                            <input type="radio" name="sexo" value="M" checked class="form-control">Masculino
+	                                                        </label>
+	                                                        <label class="radio-inline">
+	                                                            <input type="radio" name="sexo" value="F" class="form-control">Femenino
+	                                                        </label>
+                                                		</div>
+                                                		<div class="form-group">
+	                                                		<label>Parentesco</label>
+	                                                		<select name="parentesco" class="form-control">
+	                                                			<option value="Hijo">Hijo</option>
+	                                                			<option value="Esposa">Esposa</option>
+	                                                			<option value="Padre" selected>Padre</option>
+	                                                		</select>
+                                                		</div>
+                                                		<div class="form-group">
+	                                                		<label>Tipo de afiliación</label>
+	                                                		<select name="tipoafiliacion" class="form-control">
+	                                                			<option value="Socio" selected>Socio</option>
+	                                                		</select>
+                                                		</div>
+                                                		<button type="submit" class="btn btn-primary">Guardar Socio <span class="fa fa-save"></span> 
+                                                		</button>
+													</form>	  
+												</div>
+											</div>	
+                                 		</div>
+                                 	</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.portlet-body -->
+            </div>
+            <!-- /.portlet -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>	
+{% endblock %}
+{% block javascripts %}
+   {{ parent() }}
+    <!-- GLOBAL SCRIPTS -->
+    <!-- jQuery UI added before Bootstrap on this page for no interference -->
+    <script src="{{ asset('http://code.jquery.com/ui/1.10.3/jquery-ui.js')}}"></script>
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/bootstrap-tokenfield.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/typeahead.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <!-- THEME SCRIPTS -->
+    <script src="{{ asset('js/plugins/validate/bootstrapValidator.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/validator.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/jquery.validate.min.js')}}"></script>
+{% endblock %}
+

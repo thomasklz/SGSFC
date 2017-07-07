@@ -1,0 +1,108 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+{% block javascriptsHeader  %}
+ {{ parent() }}
+<script type="text/javascript">
+ $(document).ready(function (){
+    $('#cuotas').click( function (event){
+                      $("#viewcoutas").toggleClass("hide");  
+                      $('#viewmultas').attr("class","hide");
+                      $('#viewreuniones').attr("class","hide");
+                  });              
+    $('#multas').click( function (){  
+                      $('#viewmultas').toggleClass("hide");
+                      $('#viewcoutas').attr("class","hide");
+                      $('#viewreuniones').attr("class","hide");
+                  });
+    $('#reuniones').click( function (){
+                      $('#viewreuniones').toggleClass("hide");
+                      $('#viewcoutas').attr("class","hide");
+                      $('#viewmultas').attr("class","hide");
+                  });
+  });
+ </script>
+ <script src="{{ asset('js/servicios/searchSocio.js')}}"></script>
+ <script src="{{ asset('js/servicios/addMes.js')}}"></script>
+<script src="{{ asset('js/servicios/comprobrarChecked.js')}}"></script>
+<script src="{{ asset('js/servicios/multas.js')}}"></script>
+<script src="{{ asset('js/servicios/reunion.js')}}"></script>
+{% endblock %}
+{% block contentPage %}
+<div class="page-content">
+<!-- begin PAGE TITLE ROW -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title">
+        <h1 class="text-center">Sistema de Gestion de Fondos Mortuorios</h1>
+      </div>
+    </div>
+    <div id="dataCheck"> </div>
+    <div id="dataCheckReunion"> </div>
+    <!-- /.col-lg-12 -->
+    <div class="text-success" id="divRfSocioSearch" data-path="{{path('socio_search')}}"><h4> Buscar socio:</h4></div>
+    <div class="input-group  tooltip-sidebar-toggle">
+      <input type="text" class="form-control" name="buscar" placeholder="Ingresar número de cédula" data-toggle="tooltip" data-placement="top" title="Ingresar número de cédula" id="search">
+        <span class="input-group-btn">
+          <button  class="btn btn-default" type="submit" id="searchSocioBnt"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+    </br>
+    <div class="row" id="searchSocioText" data-idafiliado=""></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="portlet portlet-default">
+        <div class="portlet-heading">
+         <div class="row">
+         <div class="col-md-6">
+            <div class="col-md-2">
+            <h4>Año: </h4>
+            </div>
+            <div class="portlet-widgets col-md-10">
+            <select id="year" class="form-control" onchange="MesesAPagar()">
+              {% if year is defined %}
+              {% for years in year %}
+              <option value="{{years.year}}" selected>{{years.year}}</option>
+              {% endfor %}
+              {% endif %}
+            </select>
+            </div>
+          </div>
+          <div class="portlet-title col-md-2">
+            <h4>Tipos de pagos:</h4>
+          </div>
+          <div class="portlet-widgets col-md-4">
+          <ul id="myTab" class="list-inline tabbed-portlets">
+            <li class="active"><a class="btn btn-xs btn-green" href="#tab1" data-toggle="tab" id="cuotas">Cuotas</a></li>
+            <li><a class="btn btn-xs btn-green" href="#tab2" data-toggle="tab" id="multas">Multas</a></li>
+            <li><a class="btn btn-xs btn-green" href="#tab3" data-toggle="tab" id="reuniones">Reuniones</a></li>
+          </ul>
+          <span class="divider"></span>
+          <a data-toggle="collapse" data-parent="#accordion" href="#purplePortlet"><i class="fa fa-chevron-down"></i></a>
+          </div>
+          <div class="clearfix"></div>
+          </div>
+        </div>
+        <div id="purplePortlet" class="panel-collapse collapse in">
+          <div class="portlet-body" >
+            <div id="myTabContent" class="tab-content">
+              <div class="tab-pane fade in active" id="tab1">
+                <div id='viewcoutas' class="hide">{{include('SeguroBundle:Gestion:cuotas.html.twig')}}</div>
+              </div>
+              <div class="tab-pane fade" id="tab2">
+                <div id='viewmultas' class="hide">{{include('SeguroBundle:Gestion:multa.html.twig')}}</div>
+              </div>
+              <div class="tab-pane fade" id="tab3">
+                <div id='viewreuniones' class="hide">{{include('SeguroBundle:Gestion:reunion.html.twig')}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('js/plugins/bootbox/bootbox.min.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,16 @@
+seguro:
+    resource: "@SeguroBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+seguroApi:
+    resource: "@SeguroBundle/Api/"
+    type:     annotation
+    prefix:   /api/v0
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+  
+ 

@@ -1,0 +1,147 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+{% block contentPage %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Gestionar Ordenes</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-th"></i><a href=""> Ordenes</a>
+                    </li>
+                    <li class="active">Generar</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+   
+    <div class="row" id="contentAfiliado" data-servicios="{{path('orden_servicios')}}" data-path="{{path('tiempo_afiliacion')}}">
+        <div class="col-lg-12">
+            {% include("SeguroBundle:mensaje:mensaje.html.twig") %}
+            <div class="portlet portlet-default">
+                <div class="portlet-heading">
+                    <div class="row portlet-title">
+                        <h4 class="col-md-12"> Lista de Fallecidos</h4>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="portlet-body">
+                    <div class="table-responsive">
+                        <table id="example-table" class="table table-striped table-bordered table-hover table-green">
+                            <thead>
+                                <tr>
+                                    <th>Nombres | Apellidos</th>
+                                    <th class="text-center">Cédula</th>
+                                    <th>Fecha Nacimiento</th>
+                                    <th>Fecha Fallecido</th>
+                                    <th>Tipo Afiliación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if datosSocio is defined %}
+                                {% for socio in datosSocio %}
+                                <tr class="gradeC">
+                                    <td>{{ (socio.nombre ~ " " ~ socio.apellido) }}</td>
+                                    <td class="text-center">{{ socio.cedula }}</td>
+                                    <td>{{ socio.fechanacimiento|date('Y-m-d') }}</td>
+                                    <td>{{ socio.fechafallecido|date('Y-m-d') }}</td>
+                                    <td>{{ socio.tipoafiliacion }}</td>
+                                    <td class="text-center">
+                                       <button data-services="{{socio.idafiliado}}" class="btn btn-xs btn-default">
+                                        <span class="fa fa-plus-circle"></span> Añadir servicios
+                                    </button>
+                                    </td>
+                                </tr>
+                                {% endfor %} 
+                                {% endif %} 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-md-5 label label-success"><h5>:: DATOS FALLECIDO ::</h5></div>
+            <div class="col-md-1"></div>
+            <div class="col-md-6 label label-success"><h5>:: SERVICIOS ::</h5></div>
+    </div>  
+    <br>      
+    <div class="row" id="contentOrden" data-path="{{path('orden_nueva')}}">
+        <div class="col-md-5">
+            <form action="" method="get">
+                <div class="form-group">
+                 Código: <input type="text" class="form-control" name="codigo"  disabled="true">
+                </div>
+                <div class="form-group">
+                 Nombres y Apellido: <input type="text" class="form-control" name="nombapel" disabled="true">
+                </div>
+                <div class="form-group">
+                 Cédula: <input type="text" class="form-control" name="cedula" disabled="true">
+                </div>
+                <div class="form-group">
+                 Meses de afiliación: <input type="text" class="form-control" name="tiempo" disabled="true">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+                <table id="servicioTable" class=" table table-striped table-bordered table-hover table-green">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Servicio</th>
+                            <th class="text-center">Valor</th>
+                            <th>Seleccionar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if servicios is defined %}
+                        {% for servicio in servicios %}
+                        <tr class="gradeC">
+                            <td class="text-center">{{servicio.idservicio}}</td>
+                            <td> {{servicio.servicio}}</td>
+                            <td class="text-center">${{servicio.valor}}</td>
+                            <td class="text-center">
+                            <input type="checkbox" name="idservicio" value="{{servicio.idservicio}}">
+                            </td>
+                        </tr>
+                        {% endfor %} 
+                        {% endif %}
+                    </tbody>
+                </table>
+                <table id="bonoTable" class="table table-striped table-bordered table-hover table-green">
+                    <thead>
+                        <tr>
+                            <th>Bono</th>
+                            <th class="text-center">Valor</th>
+                            <th>Aplica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if bonos is defined %}
+                        {% set break = 0 %}
+                        {% for bono in bonos  if break == 0 %}
+                        <tr class="gradeC">
+                            <td> {{bono.bono}}</td>
+                            <td class="text-center">${{bono.valor}}</td>
+                            <td class="text-center">
+                            <input type="checkbox" name="idbono" value="{{bono.idbono}}">
+                            </td>
+                        </tr>
+                        {% set break = 1 %}
+                        {% endfor %} 
+                        {% endif %}
+                    </tbody>
+                </table>
+            <div><button id="generateOrden" class="btn btn-xs btn-default" data-toggle="" data-target="#flexModal"><span class="fa fa-undo"></span> Generar orden</button></div>  
+            <div id="listOrden" > </div>  
+        </div>
+    </div>
+</div>    
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('js/servicios/servicios.js')}}"></script>
+<script src="{{ asset('js/servicios/orden.js')}}"></script>
+{% endblock %}

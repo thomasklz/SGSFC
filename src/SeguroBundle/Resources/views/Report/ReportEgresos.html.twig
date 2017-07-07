@@ -1,0 +1,90 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %} 
+{% block stylesheet %}
+{{ parent() }}
+<!-- datepicker style -->
+ <link href="{{ asset ('css/plugins/bootstrap-datepicker/datepicker3.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/validate/bootstrapValidator.min.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block contentPage %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Generar Reporte</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-th"></i><a href=""> Reporte</a>
+                    </li>
+                    <li class="active">Egresos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    {{ include('SeguroBundle:mensaje:mensaje.html.twig') }}
+    <div class="row">
+        <div class="col-sm-3" style="background-color: white">
+            <ul id="myStacked" class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#stackedProfile" data-toggle="tab">Egresos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9" style="background-color: white">
+            <div id="myStackedContent" class="tab-content">
+                <div class="tab-pane fade active in" id="stackedHome">
+                    <h2 class="text-center text-success"><span class="badge blue">REPORTE DE EGRESOS</span></h2>
+                    <div class="col-md-3 text-success"><h5>POR FECHA:</h5></div>
+                    <form action="{{path('reporte_egresos')}}" method="post">
+                    <div class="col-md-4">
+                        <input class="form-control" id="datetimepicker" type="text" name="datetimepicker"  />
+                    </div>
+                    <div class="col-md-5">
+                        <button class="btn btn-success btn-md" name="">
+                            <span class="fa fa-refresh"></span> Generar
+                        </button> 
+                    </div>
+                    </form>
+                    <div class="col-md-12"><h1 class="text-warning"><hr></h1></div>
+                    <div class="row">
+                    {% if egresos is defined %} {% for egreso in egresos %}
+                    <div class="col-md-4 text-success strong">Total Diario: </div>
+                    {% if egreso.TotalDia is defined %}
+                    <div class="col-md-8">$ {{egreso.TotalDia}}</div>
+                    {% else %}
+                    <div class="col-md-8">$ 0.0</div>
+                    {% endif %}
+                    <div class="col-md-4 text-success strong">Total Mensual: </div>
+                    {% if egreso.TotalMes is defined %}
+                    <div class="col-md-8">$ {{egreso.TotalMes}}</div>
+                    {% else %}
+                    <div class="col-md-8">$ 0.0</div>
+                    {% endif %}
+                    <div class="col-md-4 text-success strong">Total Anual: </div>
+                    {% if egreso.TotalYear is defined %}
+                    <div class="col-md-8">$ {{egreso.TotalYear}}</div>
+                    {% else %}
+                     <div class="col-md-8">$ 0.0</div>
+                    {% endif %}
+                    {% endfor %} {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+   {{ parent() }}
+    <!-- GLOBAL SCRIPTS -->
+    <!-- jQuery UI added before Bootstrap on this page for no interference -->
+    <script src="{{ asset('http://code.jquery.com/ui/1.10.3/jquery-ui.js')}}"></script>
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/bootstrap-tokenfield.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/typeahead.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <!-- THEME SCRIPTS -->
+    <script src="{{ asset('js/plugins/validate/bootstrapValidator.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/validator.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/jquery.validate.min.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,1 @@
+fos.Router.setData({"base_url":"","routes":{"beneficiarios_socio":{"tokens":[["text","\/beneficiarios"],["variable","\/","[^\/]++","id"],["text","\/socio"]],"defaults":[],"requirements":[],"hosttokens":[]}},"prefix":"","host":"localhost","scheme":"http"});

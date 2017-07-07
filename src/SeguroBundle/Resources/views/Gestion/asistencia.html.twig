@@ -1,0 +1,111 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+{% block stylesheet %}
+{{ parent() }}
+<link href="{{ asset ('css/plugins/datatables/datatables.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contentPage %}
+    <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="page-title">
+                            <h1>Asistencia Reunión</h1>
+                            <ol class="breadcrumb">
+                                <h4>DETALLE REUNIÓN</h4>
+                                {% if bodyReunion is defined %}
+                                {% for reunion in bodyReunion %}
+                                 {% if loop.first %}
+                                <ul>
+                                    <li><strong>Tema:</strong> {{reunion.temas}}</li>
+                                    <li><strong>Descripción:</strong> {{reunion.descripcion}}</li>
+                                    <li><strong>Fecha Reunión:</strong> {{reunion.fechareunion|date('Y:m:d H:m:s')}}</li>
+                                    <li><strong>Valor Reunión:</strong> {{reunion.valorreunion}}</li>
+                                    <li><strong>Valor Multa:</strong> {{reunion.valormulta}}</li>
+                                    <input type="hidden" id="idreunion" value="{{reunion.idreunion}}">
+                                 </ul>
+                                 {% endif %}
+                                {% endfor %}
+                                {% endif %}
+                            </ol>
+                        </div>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                <!-- end PAGE TITLE ROW -->
+                <!-- begin ADVANCED TABLES ROW --> 
+                 {{ include('SeguroBundle:mensaje:mensaje.html.twig') }}
+                <div class="row" id="contentTable" data-path="{{path('asistencia_registrar')}}"> 
+                    <div class="col-lg-12">
+                        <div class="portlet portlet-default">
+                            <div class="portlet-heading">
+                                <div class="row portlet-title">
+                                    <h4 class="col-md-12">Lista de Socios</h4>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="table-responsive">
+                                    <table id="example-table" class="table table-striped table-bordered table-hover table-green">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Asistencia</th>
+                                                <th>Nombres | Apellidos</th>
+                                                <th class="text-center">Cédula</th>
+                                                <th class="text-center">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           {% if bodySocios is defined %}
+                                           {% for socio in bodySocios %}
+                                            <tr class="gradeC">
+                                                <td class="text-center"> 
+                                                {% if bodyReunion is defined %}
+                                                {% if arrayMultas is defined %}
+                                                {% if socio.idafiliado in arrayMultas %}
+                                                <span class='badge red'>Inasistencia</span>
+                                                {% else %}
+                                                <input type="checkbox" data-afiliado="{{socio.idafiliado}}" id="{{socio.idafiliado}}" checked="true">
+                                                 <span id="falta{{socio.idafiliado}}"> </span>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% if arrayMultas is not defined %}
+                                                <input type="checkbox" data-afiliado="{{socio.idafiliado}}" id="{{socio.idafiliado}}" checked="true">
+                                                 <span id="falta{{socio.idafiliado}}"> </span>
+                                                {% endif %}
+                                                {% endif %}
+                                                </td>
+                                                <td>{{ (socio.nombre ~ " " ~ socio.apellido) }}</td>
+                                                <td class="text-center">{{ socio.cedula }}</td>
+                                                <td class="text-center">
+                                                <button id="beneficiario" data-id="{{socio.idafiliado}}" class="btn btn-xs btn-default" data-toggle="modal" data-target="#flexModal" data-path="{{path('multas_lista')}}">
+                                                    <span class="fa fa-arrow-circle-right"></span> ver multas
+                                                </button>
+                                                </td>
+                                            </tr>
+                                            {% endfor %} 
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                 {{ include('SeguroBundle:Gestion:listaMultas.html.twig') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{% endblock %}
+{% block javascriptsHeader %}
+{{ parent() }}
+<script src="{{ asset('js/servicios/registrar_asistencia.js')}}"></script>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<!-- HISRC Retina Images -->
+<script src="{{ asset ('js/plugins/hisrc/hisrc.js') }}"></script>
+<!-- PAGE LEVEL PLUGIN SCRIPTS -->
+<script src="{{ asset ('js/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset ('js/plugins/datatables/datatables-bs3.js') }}"></script>
+<!-- THEME SCRIPTS -->
+<script src="{{ asset('js/flex.js')}}"></script>
+<script src="{{ asset('js/demo/advanced-tables-demo.js')}}"></script>
+{% endblock %}

@@ -1,0 +1,230 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %} 
+{% block stylesheet %}
+    {{ parent() }}
+<!-- datepicker style -->
+ <link href="{{ asset ('css/plugins/bootstrap-datepicker/datepicker3.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/validate/bootstrapValidator.min.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contentPage %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Perfil de Usuario</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-user"></i> <a href="index.html">Usuario</a>
+                    </li>
+                    <li class="active">Perfil de Usuario</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+    {{ include('SeguroBundle:mensaje:mensaje.html.twig') }}
+        <div class="portlet portlet-default">
+            <div class="portlet-body">
+                <ul id="userTab" class="nav nav-tabs">
+                    <li class="active"><a href="#overview" data-toggle="tab">Perfil</a>
+                    </li>
+                    <li><a href="#profile-settings" data-toggle="tab">Acualizar Perfil</a>
+                    </li>
+                </ul>
+                <div id="userTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="overview">
+                        <div class="row">
+                            <div class="col-lg-2 col-md-3">
+                                <img class="img-responsive img-profile" src="{{ image(app.session.get('foto')).resize(266,400)}}"" alt="">
+                            </div>
+                            <div class="col-lg-7 col-md-5">
+                                {% if datosSocio is defined %}
+                                {% for datos in datosSocio%}
+                                <h1>Thomas Loor</h1>
+                                <h5><strong>Código: </strong>{{datos.idafiliado}}</h5>
+                                <h5><strong>Nombres: </strong>{{datos.nombre ~" "~ datos.apellido }}</h5>
+                                <h5><strong>Cédula: </strong>{{datos.cedula}}</h5>
+                                <h5><strong>Fecha de Nacimiento: </strong>{{datos.fechanacimiento |date('Y-m-d')}}</h5>
+                                <h5><strong>Parentesco: </strong>{{datos.parentesco}}</h5>
+                                <ul class="list-inline">
+                                    <li><i class="fa fa-user fa-muted"></i> {{datos.tipo}}</li>
+                                    <li><i class="fa fa-calendar fa-muted"></i> Fecha de ingreso: {{datos.fechaingreso |date('Y-m-d')}}</li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}   
+                                <h3>Últimos Pagos </h3>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Fecha</th>
+                                                <th class="text-center">Hora</th>
+                                                <th class="text-center">Valor</th>
+                                                <th class="text-center">Tipo de Pago</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if pagosUltimos is defined %}
+                                        {% for pagos in pagosUltimos%}
+                                            <tr>
+                                                <td class="text-center">{{pagos.fechaingreso | date('Y-m-d')}}</td>
+                                                <td class="text-center">{{pagos.fechaingreso | date('H:m:s')}}</td>
+                                                <td class="text-center">{{pagos.valor}}</td>
+                                                <td class="text-center"><a class="btn btn-xs btn-success disabled"><i class="fa fa-check-square-o"></i> {{pagos.nombreingreso}}</a>
+                                                </td>
+                                            </tr>
+                                         {% endfor %}
+                                         {% endif %}   
+                                        </tbody>
+                                    </table>
+ 
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="profile-settings">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <ul id="userSettings" class="nav nav-pills nav-stacked">
+                                    <li class="active"><a href="#basicInformation" data-toggle="tab"><i class="fa fa-archive fa-fw"></i> Información Básica</a>
+                                    </li>
+                                    <li><a href="#profilePicture" data-toggle="tab"><i class="fa fa-picture-o fa-fw"></i> Foto de Perfil</a>
+                                    </li>
+                                    <li><a href="#changePassword" data-toggle="tab"><i class="fa fa-lock fa-fw"></i> Cambiar Contraseña</a>
+                                    </li>
+                                    <li><a href="#changeUsuario" data-toggle="tab"><i class="fa fa-user fa-fw"></i> Cambiar Usuario</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-9">
+                                <div id="userSettingsContent" class="tab-content">
+                                    {% for socio in datosSocio%}
+                                    <div class="tab-pane fade in active" id="basicInformation">
+                                        <form role="form" method="put" action="{{path('actualizar_socio', {'id': socio.idafiliado } )}}">
+                                            <h4 class="page-header">Información Personal:</h4>
+                                            <div class="form-group">
+                                                <label>Nombres</label>
+                                                <input type="text" name="nombres" class="form-control" value="{{socio.nombre}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Apellidos</label>
+                                                <input type="text" name="apellidos" class="form-control" value="{{socio.apellido}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Cédula</label>
+                                                <input type="tel" name="cedula" class="form-control" value="{{socio.cedula}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Fecha de Nacimiento</label>
+                                                <div id="sandbox-container">
+                                                    <input class="form-control" type="text"  id="datetimepicker" name="datetimepicker" value ="{{socio.fechanacimiento |date('Y-m-d')}}" data-date-format="yyyy-mm-dd"/>
+                                                </div>
+                                                </div>
+                                            <div class="form-group">
+                                                <label>Sexo</label>
+                                                <select name="sexo" class="form-control">
+                                                    {% if socio.sexo == "M"%}
+                                                     <option value="F">Femenino</option>
+                                                     <option value="M" selected>Masculino</option>
+                                                    {% else %}
+                                                    <option value="M" >Masculino</option>
+                                                    <option value="F" selected>Femenino</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Parentesco</label>
+                                                <select name="parentesco" class="form-control">
+                                                    {% if socio.parentesco == "Hijo" %}
+                                                    <option value="Hijo"selected>Hijo</option>
+                                                    <option value="Esposa">Esposa</option>
+                                                    <option value="Padre">Padre</option>
+                                                    {% endif %}
+                                                    {% if socio.parentesco == "Esposa" %}
+                                                    <option value="Hijo">Hijo</option>
+                                                    <option value="Esposa" selected>Esposa</option>
+                                                    <option value="Padre">Padre</option>
+                                                    {% endif %}
+                                                    {% if socio.parentesco == "Padre" %}
+                                                    <option value="Hijo">Hijo</option>
+                                                    <option value="Esposa">Esposa</option>
+                                                    <option value="Padre" selected>Padre</option>
+                                                    {% endif %}
+                                                   
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-default">Actualizar perfil</button>
+                                            {% endfor %}
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="profilePicture">
+                                        <form  role="form" enctype="multipart/form-data"  method="post" action="{{path('update_foto', {'id': app.session.get('idusuario')} )}}" >
+                                            <div class="form-group">
+                                                <label>Imagen</label>
+                                                <input type="file" name="foto">
+                                                <p class="help-block"><i class="fa fa-warning"></i> Formatos soportados: JPG, PNG, JPEG</p>
+                                                <button type="submit" class="btn btn-default">Actualizar foto</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade in" id="changePassword">
+                                        <h3>Cambiar Contraseña:</h3>
+                                        <form role="form" method="post" action="{{path('update_password', {'id': app.session.get('idusuario')} )}}" >
+                                            <div class="form-group">
+                                                <label>Contraseña Anterior</label>
+                                                <input type="password" class="form-control" name="passante">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Nueva Contraseña</label>
+                                                <input type="password" class="form-control" name="password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Vuelva a Ingrese Contraseña</label>
+                                                <input type="password" class="form-control" name="password2">
+                                            </div>
+                                            <div id="check" class="text-red"></div>
+                                            <button type="submit" id="send" class="btn btn-default">Actualizar Contraseña</button>
+                                        </form>
+                                    </div>
+                                    <div class="tab-pane fade" id="changeUsuario">
+                                        <h3>Cambiar Usuario:</h3>
+                                        <form role="form" method="post" action="{{path('update_username', {'id': app.session.get('idusuario')} )}}" >
+                                          {% for socio in datosSocio%}
+                                            <div class="form-group">
+                                                <label>Usuario</label>
+                                                <input type="text" class="form-control" name="usuarioS" value="{{socio.usuario}}">
+                                            </div>
+                                           {% endfor %}
+                                            <button type="submit" id="send" class="btn btn-default">Actualizar Usuario</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+   {{ parent() }}
+    <!-- GLOBAL SCRIPTS -->
+    <!-- jQuery UI added before Bootstrap on this page for no interference -->
+    <script src="{{ asset('http://code.jquery.com/ui/1.10.3/jquery-ui.js')}}"></script>
+    <script src="{{ asset('js/servicios/check_pass.js')}}"></script>
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/bootstrap-tokenfield.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/typeahead.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <!-- THEME SCRIPTS -->
+    <script src="{{ asset('js/plugins/validate/bootstrapValidator.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/validator.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/jquery.validate.min.js')}}"></script>
+{% endblock %}

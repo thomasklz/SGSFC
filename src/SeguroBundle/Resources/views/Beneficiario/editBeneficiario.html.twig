@@ -1,0 +1,96 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %} 
+{% block stylesheet %}
+    {{ parent() }}
+<!-- datepicker style -->
+ <link href="{{ asset ('css/plugins/bootstrap-datepicker/datepicker3.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/validate/bootstrapValidator.min.css')}}" rel="stylesheet">
+ <link href="{{ asset ('css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contentPage %}
+<div class="page-content">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-title">
+                <h1>Editar Beneficiario</h1>
+                <ol class="breadcrumb">
+                    <li><i class="fa fa-user"></i> Beneficiario</li>
+                    <li><a href="{{path('beneficiarios_socio')}}" class="text-blue">Listado</a></li>
+                    <li class="active">Editar</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    {{ include('SeguroBundle:mensaje:mensaje.html.twig') }} 
+    {% if beneficiario is defined %} 
+    {% for socio in beneficiario %}
+    <form role="form" method="put" action="{{path('actualizar_beneficiario', {'id': socio.idafiliado } )}}">
+        
+        <div class="form-group">
+            <label>Nombres</label>
+            <input type="text" name="nombres" class="form-control" value="{{socio.nombre}}">
+        </div>
+        <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" name="apellidos" class="form-control" value="{{socio.apellido}}">
+        </div>
+        <div class="form-group">
+            <label>Cédula</label>
+            <input type="tel" name="cedula" class="form-control" value="{{socio.cedula}}">
+        </div>
+        <div class="form-group">
+            <label>Fecha de Nacimiento</label>
+            <div id="sandbox-container">
+                <input class="form-control" type="text" id="datetimepicker" name="datetimepicker" value="{{socio.fechanacimiento |date('Y-m-d')}}" data-date-format="yyyy-mm-dd" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Sexo</label>
+            <select name="sexo" class="form-control">
+                {% if socio.sexo == "M"%}
+                <option value="F">Femenino</option>
+                <option value="M" selected>Masculino</option>
+                {% else %}
+                <option value="M">Masculino</option>
+                <option value="F" selected>Femenino</option>
+                {% endif %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Parentesco</label>
+            <select name="parentesco" class="form-control">
+                {% if socio.parentesco == "Hijo" %}
+                <option value="Hijo" selected>Hijo</option>
+                <option value="Esposa">Esposa</option>
+                <option value="Padre">Padre</option>
+                {% endif %} {% if socio.parentesco == "Esposa" %}
+                <option value="Hijo">Hijo</option>
+                <option value="Esposa" selected>Esposa</option>
+                <option value="Padre">Padre</option>
+                {% endif %} {% if socio.parentesco == "Padre" %}
+                <option value="Hijo">Hijo</option>
+                <option value="Esposa">Esposa</option>
+                <option value="Padre" selected>Padre</option>
+                {% endif %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default">Actualizar</button>
+    </form>
+    {% endfor %} 
+    {% endif %}
+</div>
+{% endblock %}
+{% block javascripts %}
+   {{ parent() }}
+    <!-- GLOBAL SCRIPTS -->
+    <!-- jQuery UI added before Bootstrap on this page for no interference -->
+    <script src="{{ asset('http://code.jquery.com/ui/1.10.3/jquery-ui.js')}}"></script>
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/bootstrap-tokenfield.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-tokenfield/typeahead.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <!-- THEME SCRIPTS -->
+    <script src="{{ asset('js/plugins/validate/bootstrapValidator.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/validator.js')}}"></script>
+    <script src="{{ asset('js/plugins/validate/jquery.validate.min.js')}}"></script>
+{% endblock %}

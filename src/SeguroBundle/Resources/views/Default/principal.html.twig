@@ -1,0 +1,268 @@
+{% extends '::base.html.twig' %} 
+{% block title %}:: Sistemas de Gestión de Fondos Mortuorios ::{% endblock %} 
+{% block body %}
+<div id="wrapper">
+    <!-- begin TOP NAVIGATION -->
+    <nav class="navbar-top" role="navigation">
+        <!-- begin BRAND HEADING -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle pull-right" data-toggle="collapse" data-target=".sidebar-collapse">
+                <i class="fa fa-bars"></i> Menu
+            </button>
+            <div class="navbar-brand">
+                <a href="{{path('pagina_principal')}}">
+                    <img src="{{ asset('img/flex-admin-logo.png')}}" class="img-responsive" alt="">
+                </a>
+            </div>
+        </div>
+        <!-- end BRAND HEADING -->
+        <div class="nav-top">
+            <!-- begin LEFT SIDE WIDGETS -->
+            <ul class="nav navbar-left">
+                <li class="tooltip-sidebar-toggle">
+                    <a href="#" id="sidebar-toggle" data-toggle="tooltip" data-placement="right" title="Sidebar Toggle">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </li>
+                <!-- You may add more widgets here using <li> -->
+            </ul>
+            <!-- end LEFT SIDE WIDGETS -->
+            <!-- begin MESSAGES/ALERTS/TASKS/USER ACTIONS DROPDOWNS -->
+            <ul class="nav navbar-right">
+                <!-- begin USER ACTIONS DROPDOWN -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-user"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li>
+                            <a href="{{path('pagina_principal')}}">
+                                <i class="fa fa-user"></i> Perfil usuario
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('reporte_deudasSocio')}}">
+                                <i class="fa fa-inbox"></i> Mis deudas
+                            </a>
+                        </li>
+                        <li>
+                            <a class="logout_open" href="#logout">
+                                <i class="fa fa-sign-out"></i> Salir
+                                <strong>{{ app.session.get("user") }}</strong>
+                            </a>
+                        </li>
+                        <input type="hidden" id="hdnSession" data-value="{{ app.session.get('idusuario') }}" />
+                    </ul>
+                    <!-- /.dropdown-menu -->
+                </li>
+                <!-- /.dropdown -->
+                <!-- end USER ACTIONS DROPDOWN -->
+            </ul>
+            <!-- /.nav -->
+            <!-- end MESSAGES/ALERTS/TASKS/USER ACTIONS DROPDOWNS -->
+        </div>
+        <!-- /.nav-top -->
+    </nav>
+    <!-- /.navbar-top -->
+    <!-- end TOP NAVIGATION -->
+    <!-- begin SIDE NAVIGATION -->
+    <nav class="navbar-side" role="navigation">
+        <div class="navbar-collapse sidebar-collapse collapse">
+            <ul id="side" class="nav navbar-nav side-nav">
+                <!-- begin SIDE NAV USER PANEL -->
+                <li class="side-user hidden-xs">
+               
+                    <img class="img-circle" src="{{ image(app.session.get('foto')).resize(150,150)}}" alt="">
+                    <p class="welcome">
+                       // <i class="fa fa-key"></i>Logeado como: {% set tipos = app.session.get("idtipousuario") %} {{ tipos.tipo }}
+                    </p>
+                    <p class="name tooltip-sidebar-logout">
+                        Usuario: 
+                        <span class="last-name">{{ app.session.get("user") }} </span> <a style="color: inherit" class="logout_open" href="{{ path('user_logout') }} " data-toggle="tooltip" data-placement="top" title="Logout"><i class="fa fa-sign-out"></i></a>
+                    </p>
+                    <div class="clearfix"></div>
+                </li>
+                <!-- end SIDE NAV USER PANEL -->
+                <!-- begin Usuarios LINK -->
+                {% if (tipos.tipo == "ROLE_ADMIN") %}
+                <li class="panel">
+                    <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#tables">
+                        <i class="fa fa-user"></i> Usuario <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="collapse nav" id="tables">
+                        <li>
+                            <a href="{{ path('lista_usuarios') }}">
+                                <i class="fa fa-angle-double-right"></i> Gestionar Usuarios
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+                <!-- end Usuarios LINK -->
+                <!-- begin Socios DROPDOWN -->
+                 {% if (tipos.tipo == "ROLE_ADMIN") or  (tipos.tipo == "ROLE_COBRADOR") %}
+                <li class="panel">
+                    <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#charts">
+                        <i class="fa fa-male"></i> Socios <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="collapse nav" id="charts">
+                        <li>
+                            <a href="{{ path ('nuevo_socio')}}">
+                                <i class="fa fa-angle-double-right"></i> Registar Socio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path ('listado_socio')}}">
+                                <i class="fa fa-angle-double-right"></i> Listar Socios
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
+                <!-- end Socios DROPDOWN -->
+                <!-- begin Beneficiarios DROPDOWN -->
+                <li class="panel">
+                    <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#message-center">
+                        <i class="fa fa-group"></i> Beneficiarios <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="collapse nav" id="message-center">
+                        <li>
+                            {% if (tipos.tipo == "ROLE_ADMIN") or  (tipos.tipo == "ROLE_COBRADOR") %}
+                            <a href="{{path('nuevo_beneficiario')}}">
+                                <i class="fa fa-angle-double-right"></i> Registrar Beneficiarios
+                            </a>
+                            {% endif %}
+                            <a href="{{path('beneficiarios_socio')}}">
+                                <i class="fa fa-angle-double-right"></i> Mis Beneficiarios
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- end Beneficiarios DROPDOWN -->
+                <!-- begin Crobros DROPDOWN -->
+                {% if (tipos.tipo == "ROLE_ADMIN") or  (tipos.tipo == "ROLE_COBRADOR") %}
+                <li>
+                    <a href="{{path('cobros_index')}}">
+                        <i class="fa fa-money"></i> Cobros
+                    </a>
+                </li>
+                {% endif %}
+                <!-- end Cobros DROPDOWN -->
+                <!-- begin Servicios DROPDOWN   -->
+                {% if tipos.tipo == "ROLE_ADMIN" %}
+                <li class="panel">
+                    <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#pages">
+                        <i class="fa fa-table"></i> Servicios <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="collapse nav" id="pages">
+                        <li>
+                            <a href="{{path('servicios_lista')}}">
+                                <i class="fa fa-angle-double-right"></i> Generar orden
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('orden_registrar')}}">
+                                <i class="fa fa-angle-double-right"></i>Registrar orden
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- end Servicios DROPDOWN -->
+                <!-- begin Administrar DROPDOWN -->
+                <li class="panel">
+                    <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#ui-elements">
+                        <i class="fa fa-laptop"></i> Administrar <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="collapse nav" id="ui-elements">
+                        <li>
+                            <a href="{{path('reunion_nueva')}}">
+                                <i class="fa fa-angle-double-right"></i> Registrar reunión
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('nuevo_meses')}}">
+                                <i class="fa fa-angle-double-right"></i> Registrar meses
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('servicio_nuevo')}}">
+                                <i class="fa fa-angle-double-right"></i> Registrar servicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('asistencia_reunion')}}">
+                                <i class="fa fa-angle-double-right"></i> Asistencia
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{path('beneficiariossocio_fallecidos')}}">
+                                <i class="fa fa-angle-double-right"></i> Fallecidos
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- begin Reportes DROPDOWN -->
+                <li class="panel">
+                        <a href="javascript:;" data-parent="#side" data-toggle="collapse" class="accordion-toggle" data-target="#forms">
+                            <i class="fa fa-list-alt"></i> Reportes <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="collapse nav" id="forms">
+                            <li>
+                                <a href="{{path('reporte_ingresos')}}">
+                                    <i class="fa fa-angle-double-right"></i> Ingresos
+                                </a>
+                            </li>
+                            <li>
+                                 <a href="{{path('reporte_egresos')}}">
+                                    <i class="fa fa-angle-double-right"></i> Egresos
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <!-- end Reportes DROPDOWN -->
+                {% endif %}
+                <!-- end  Administrar DROPDOWN -->
+            </ul>
+            <!-- /.side-nav -->
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+    <!-- /.navbar-side -->
+    <!-- end SIDE NAVIGATION -->
+    <!-- begin MAIN PAGE CONTENT -->
+    <div id="page-wrapper">
+        {% block contentPage %} {% endblock %}
+    </div>
+    <!-- /#page-wrapper -->
+    <!-- end MAIN PAGE CONTENT -->
+    <!-- Logout Notification Box -->
+    <div id="logout">
+        <div class="logout-message">
+            <img class="img-circle img-logout" src="{{ image(app.session.get('foto')).resize(150,150)}}" alt="">
+            <h3>
+                <i class="fa fa-sign-out text-green"></i> Deseas cerrar sesión?
+            </h3>
+            <p>Selecciona salir si estás listo
+                <br> para cerrar la sesión actual.</p>
+            <ul class="list-inline">
+                <li>
+                    <a href="{{ path('user_logout') }}" class="btn btn-green">
+                        <strong>Salir</strong>
+                    </a>
+                </li>
+                <li>
+                    <button class="logout_close btn btn-green">Cancel</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %} {% block javascripts %} {{ parent() }}
+    <!-- /#logout -->
+    <!-- Logout Notification jQuery -->
+    <script src="{{ asset ('js/plugins/popupoverlay/logout.js') }}"></script>
+    <!-- HISRC Retina Images -->
+    <script src="{{ asset ('js/plugins/hisrc/hisrc.js') }}"></script>
+    <!-- PAGE LEVEL PLUGIN SCRIPTS -->
+    <!-- THEME SCRIPTS -->
+    <script src="{{ asset ('js/flex.js') }}"></script>
+    {% endblock %}

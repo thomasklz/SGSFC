@@ -1,0 +1,68 @@
+{% extends 'SeguroBundle:Default:principal.html.twig' %}
+{% block contentPage %}
+ <div class="page-content">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="page-title">
+          <h1>Editar Usuarios</h1>
+          <ol class="breadcrumb">
+            <li><i class="fa fa-user"></i>  Usuarios</li>
+            <li><a href="{{path('lista_usuarios')}}" class="text-blue">Listado</a></li>
+            <li class="active">Editar</li>
+          </ol>
+      </div>
+    </div>
+  </div>
+  {{ include('SeguroBundle:mensaje:mensaje.html.twig') }}
+  {% if user is defined %}
+  {% for usuario in user %}
+  <form action="{{path('update_usuario',{id: usuario.idusuario})}}" method="post" role="form" >
+    <div class="form-group">
+      <label>Estado</label>
+        <select name="estado" class="form-control">
+        {% if usuario.estado==1%}
+          <option value="1" selected>Habilitado</option>
+          <option value="0">Deshabilitar</option>
+          {% else %}
+          <option value="1">Habilitado</option>
+          <option value="0" selected>Deshabilitar</option>
+        {% endif %} 
+        </select>
+    </div>
+    <div class="form-group">
+      <label>Tipo usuario</label>
+        <select name="tipouser" class="form-control">
+        {% if usuario.tipo=="ROLE_SOCIO" %}
+          <option value="1">ROLE_ADMIN</option>
+          <option value="2">ROLE_COBRADOR</option>
+          <option value="3" selected>ROLE_SOCIO</option>
+        {% endif %} 
+        {% if usuario.tipo=="ROLE_ADMIN" %}
+          <option value="1" selected>ROLE_ADMIN</option>
+          <option value="2">ROLE_COBRADOR</option>
+          <option value="3">ROLE_SOCIO</option>
+        {% endif %}
+         {% if usuario.tipo=="ROLE_COBRADOR" %}
+          <option value="1">ROLE_ADMIN</option>
+          <option value="2" selected>ROLE_COBRADOR</option>
+          <option value="3">ROLE_SOCIO</option>
+        {% endif %}   
+        </select>
+    </div>
+    <input type="hidden" name="_method" value="PUT">
+    <div class="form-group">
+      <label >Usuario</label>
+      <input type="text" class="form-control" value="{{usuario.usuario}}" name="usuario">
+    </div>
+    <div class="form-group">
+      <label >Contraseña</label>
+      <input type="password" class="form-control" placeholder="Password" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Editar Usuario</button>
+  </form>
+  {% endfor %}
+  {% endif %} 
+</div>
+{% endblock %}
+
+
