@@ -31,7 +31,6 @@
         "phpunit/phpunit": "3.7.*",
         "beberlei/DoctrineExtensions": "^1.0",
         "gregwar/image-bundle": "dev-master",
-        "chadyred/fpdf-fpdi-symfony2": "^2.0",
         "nelmio/api-doc-bundle": "^2.13"
     },
     "require-dev": {

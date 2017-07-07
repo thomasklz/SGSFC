@@ -13,8 +13,8 @@ use SeguroBundle\Form\UsuarioType;
 use SeguroBundle\Entity\Usuario;
 use SeguroBundle\MyClass\uri;
 use SeguroBundle\MyClass\functiones;
-use SeguroBundle\MyClass\MyPDF;
-use Royopa\PdfBundle\lib\PDF;
+
+
 
 class UsuarioController extends Controller
 {
